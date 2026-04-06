@@ -2,17 +2,18 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import {
-    ActivityIndicator,
-    Alert,
-    Image,
-    Modal,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  Alert,
+  Image,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
+import { HorarioItem } from "../../../src/components/HorarioItem/HorarioItem";
 import { CanchaDTO } from "../../../src/dtos/CanchaDTO";
 import { HorarioDTO } from "../../../src/dtos/HorarioDTO";
 import { CrearReservaDTO, ReservaDTO } from "../../../src/dtos/ReservaDTO";
@@ -154,18 +155,14 @@ export default function DetalleCanchaScreen() {
         ) : (
           <View style={styles.horariosGrid}>
             {horarios.map((h) => (
-              <TouchableOpacity
+              <HorarioItem
                 key={h.id}
-                style={styles.horarioChip}
+                horario={h}
                 onPress={() => {
                   setHorarioSeleccionado(h);
                   setModalVisible(true);
                 }}
-              >
-                <Text style={styles.horarioText}>
-                  {h.horaInicio.substring(0, 5)} - {h.horaFin.substring(0, 5)}
-                </Text>
-              </TouchableOpacity>
+              />
             ))}
             {horarios.length === 0 && fecha !== "" && (
               <Text style={styles.empty}>

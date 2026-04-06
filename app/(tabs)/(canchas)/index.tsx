@@ -1,13 +1,14 @@
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
-    ActivityIndicator,
-    FlatList,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
+import { CanchaCard } from "../../../src/components/CanchaCard/CanchaCard";
 import { CanchaDTO, SedeDTO, TipoCanchaDTO } from "../../../src/dtos/CanchaDTO";
 import ApiClient from "../../../src/services/ApiClient";
 
@@ -131,18 +132,10 @@ export default function CanchasScreen() {
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={{ paddingBottom: 16 }}
           renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.card}
+            <CanchaCard
+              cancha={item}
               onPress={() => router.push(`/(tabs)/(canchas)/${item.id}`)}
-            >
-              <Text style={styles.cardTitle}>{item.nombre}</Text>
-              <Text style={styles.cardSub}>
-                {item.sede} · {item.tipoCancha}
-              </Text>
-              <Text style={styles.cardDesc} numberOfLines={2}>
-                {item.descripcion}
-              </Text>
-            </TouchableOpacity>
+            />
           )}
           ListEmptyComponent={
             <Text style={styles.empty}>No hay canchas disponibles</Text>
@@ -177,21 +170,5 @@ const styles = StyleSheet.create({
   chipActive: { backgroundColor: "#2563eb", borderColor: "#2563eb" },
   chipText: { fontSize: 13, color: "#475569" },
   chipTextActive: { color: "#fff", fontWeight: "600" },
-  card: {
-    backgroundColor: "#fff",
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-    borderWidth: 1,
-    borderColor: "#e2e8f0",
-  },
-  cardTitle: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#1e293b",
-    marginBottom: 4,
-  },
-  cardSub: { fontSize: 13, color: "#2563eb", marginBottom: 6 },
-  cardDesc: { fontSize: 13, color: "#64748b" },
   empty: { textAlign: "center", color: "#94a3b8", marginTop: 48, fontSize: 15 },
 });

@@ -9,8 +9,7 @@ function RootLayoutNav() {
   const router = useRouter();
 
   const inAuthGroup = segments[0] === "(auth)";
-  const inTabsGroup = segments[0] === "(tabs)";
-  const inRootIndex = segments.length === 0;
+  const inRootIndex = (segments as string[]).length === 0;
   const needsRedirect =
     !isLoading &&
     ((!user && !inAuthGroup) || (!!user && (inAuthGroup || inRootIndex)));
@@ -23,7 +22,7 @@ function RootLayoutNav() {
     } else if (user && (inAuthGroup || inRootIndex)) {
       router.replace("/(tabs)/(canchas)");
     }
-  }, [user, isLoading, segments]);
+  }, [user, isLoading, segments, inAuthGroup, inRootIndex, router]);
 
   if (isLoading || needsRedirect) {
     return (
