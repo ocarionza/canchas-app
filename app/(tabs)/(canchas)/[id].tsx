@@ -72,6 +72,14 @@ export default function DetalleCanchaScreen() {
       Alert.alert("Error", "Ingresa una fecha");
       return;
     }
+    const [year, month, day] = fecha.split("-").map(Number);
+    const selectedDate = new Date(year, month - 1, day);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (isNaN(selectedDate.getTime()) || selectedDate < today) {
+      Alert.alert("Fecha inválida", "La fecha no puede ser anterior a hoy");
+      return;
+    }
     try {
       setLoadingHorarios(true);
       const data = await ApiClient.get<HorarioDTO[]>(
@@ -159,6 +167,22 @@ export default function DetalleCanchaScreen() {
                 key={h.id}
                 horario={h}
                 onPress={() => {
+                  const now = new Date();
+                  const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+                  if (fecha === todayStr) {
+                    const [hours, minutes] = h.horaInicio
+                      .split(":")
+                      .map(Number);
+                    const slotTime = new Date();
+                    slotTime.setHours(hours, minutes, 0, 0);
+                    if (slotTime <= now) {
+                      Alert.alert(
+                        "Horario no disponible",
+                        "Este horario ya pasó y no puede ser seleccionado",
+                      );
+                      return;
+                    }
+                  }
                   setHorarioSeleccionado(h);
                   setModalVisible(true);
                 }}
